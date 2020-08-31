@@ -1,0 +1,15 @@
+<main>
+
+    <p class="goback"> <a href="/">Go back</a></p>
+
+    <h1>{{title}}</h1>
+
+    <section>
+        <form class="message-form" method="POST" action="/new">
+
+            <textarea required name="messageText" class="message-input" placeholder="Enter a Comment"></textarea>
+            <input name="messageAuthor" class="message-input-author" type="text" placeholder="Your Name">
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+</main>
