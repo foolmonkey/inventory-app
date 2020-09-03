@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
+var catalogRouter = require("./routes/catalog");
 
 // Server Optimization
 var compression = require("compression");
@@ -14,12 +15,15 @@ var app = express();
 
 //Set up mongoose connection
 var mongoose = require("mongoose");
-var dev_db_url = "insert_your_database_url_here";
-var mongoDB = process.env.MONGODB_URI || dev_db_url;
+
+var mongoDB = process.env.MONGODB_URI;
 
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+app.use(compression()); //Compress all routes
+app.use(helmet());
 
 // view engine setup
 var exphbs = require("express-handlebars");
@@ -40,6 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/catalog", catalogRouter); // Add catalog routes to middleware chain.
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
